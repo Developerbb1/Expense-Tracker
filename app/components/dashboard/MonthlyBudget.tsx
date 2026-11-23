@@ -43,13 +43,6 @@ const currency = new Intl.NumberFormat('en-US', {
 export default function MonthlyBudget() {
   const [selectedMonth, setSelectedMonth] = useState('2025-10');
 
-  const monthLabel = new Date(
-    `${selectedMonth}-15T12:00:00`
-  ).toLocaleDateString('en-US', {
-    month: 'short',
-    year: 'numeric',
-  });
-
   return (
     <section className="dashboard-panel budget-panel">
       <div className="panel-header">

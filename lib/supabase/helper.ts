@@ -34,10 +34,13 @@ export function formatDate(date: string): string {
   return dateFormatter.format(new Date(`${date}T12:00:00`));
 }
 
-export function getTransactionIcon(transaction: Transaction) {
+export function getTransactionIcon(
+  transaction: Transaction,
+  categoryName?: string | null
+) {
   if (transaction.type === 'income') return ArrowDownToLine;
 
-  switch (transaction.category) {
+  switch (categoryName) {
     case 'Food':
       return ShoppingCart;
     case 'Housing':

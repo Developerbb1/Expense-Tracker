@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useState, useCallback } from 'react';
+
+import { useEffect, useState } from 'react';
 import { authenticateUser } from '@/lib/supabase/actions';
 import { getCategories } from '@/lib/supabase/categories/actions';
 import { Category } from '@/app/data/types';
@@ -9,26 +10,40 @@ import { Layers, TrendingDown, TrendingUp } from 'lucide-react';
 export default function CategoryCards() {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
-  const fetchCategories = useCallback(async () => {
-    authenticateUser();
-    setLoading(true);
-    try {
-      const result = await getCategories();
-      setCategories(result.categories);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-
-      toast.error('Failed to get all categories. Please try again.', {
-        className: 'error-toast',
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
   useEffect(() => {
-    void fetchCategories();
-  }, [fetchCategories]);
+    let isMounted = true;
+
+    async function loadCategories() {
+      try {
+        await authenticateUser();
+
+        const result = await getCategories();
+
+        if (isMounted) {
+          setCategories(result.categories);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+
+        if (isMounted) {
+          toast.error('Failed to get all categories. Please try again.', {
+            className: 'error-toast',
+          });
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadCategories();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const incomeCount = categories.filter(
     (category) => category.type === 'income'
@@ -56,6 +71,7 @@ export default function CategoryCards() {
               <h2>{categories.length}</h2>
             </div>
           </div>
+
           <div className="stat-card">
             <div className="stat-icon red">
               <TrendingDown size={21} />
@@ -65,6 +81,7 @@ export default function CategoryCards() {
               <h2>{expenseCount}</h2>
             </div>
           </div>
+
           <div className="stat-card">
             <div className="stat-icon green">
               <TrendingUp size={21} />

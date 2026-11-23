@@ -1,10 +1,13 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import { Category } from '@/app/data/types';
+import { Category, CategoryFormData } from '@/app/data/types';
 import { authenticateUser, getAuthenticatedUser } from '@/lib/supabase/actions';
-import { CategoryFormData } from '@/app/data/types';
-import { error } from 'console';
+
+type CategoryActionResult = {
+  success: boolean;
+  error: string | null;
+};
 
 export async function getCategories(): Promise<{
   userId: string;
@@ -39,10 +42,9 @@ export async function getCategories(): Promise<{
 
 export async function addCategory(
   data: CategoryFormData
-): Promise<{ success: boolean; error: any }> {
+): Promise<CategoryActionResult> {
   try {
     const user = await getAuthenticatedUser();
-
     const supabase = await createClient();
 
     const normalizedType =
@@ -56,20 +58,22 @@ export async function addCategory(
       throw new Error(`Invalid category type: ${data.type}`);
     }
 
-    const { data: newCategory, error: insertError } = await supabase
-      .from('categories')
-      .insert({
-        user_id: user.id,
-        name: data.name.trim(),
-        type: normalizedType,
-        icon: data.icon || null,
-        color: data.color || null,
-        is_default: data.is_default ?? false,
-      })
-      .select()
-      .single();
+    const { error: insertError } = await supabase.from('categories').insert({
+      user_id: user.id,
+      name: data.name.trim(),
+      type: normalizedType,
+      icon: data.icon || null,
+      color: data.color || null,
+      is_default: data.is_default ?? false,
+    });
+
     if (insertError) {
-      console.log(insertError);
+      console.error('Failed to insert category:', insertError.message);
+
+      return {
+        success: false,
+        error: insertError.message,
+      };
     }
 
     return { success: true, error: null };
@@ -87,11 +91,13 @@ export async function addCategory(
 export async function updateCategory(
   data: CategoryFormData,
   userid: string
-): Promise<{ success: boolean; error: any }> {
-  authenticateUser();
-
+): Promise<CategoryActionResult> {
   try {
     await authenticateUser();
+
+    if (!data.id) {
+      throw new Error('Category ID is required.');
+    }
 
     const supabase = await createClient();
 
@@ -105,6 +111,7 @@ export async function updateCategory(
     if (!normalizedType) {
       throw new Error(`Invalid category type: ${data.type}`);
     }
+
     const { data: updatedCategory, error: updateError } = await supabase
       .from('categories')
       .update({
@@ -120,17 +127,18 @@ export async function updateCategory(
       .maybeSingle();
 
     if (updateError) {
-      console.log(updateError.message);
-      return { success: false, error: updateError };
+      console.error('Failed to update category:', updateError.message);
+
+      return {
+        success: false,
+        error: updateError.message,
+      };
     }
 
     if (!updatedCategory) {
-      console.log(
-        'Category not found or you do not have permission to update it.'
-      );
       return {
         success: false,
-        error: error,
+        error: 'Category not found or you do not have permission to update it.',
       };
     }
 
@@ -144,29 +152,31 @@ export async function updateCategory(
 export async function deleteCategory(
   categoryId: string,
   userid: string
-): Promise<{ success: boolean; error: any }> {
-  authenticateUser();
-
+): Promise<CategoryActionResult> {
   try {
     await authenticateUser();
 
     const supabase = await createClient();
 
-    const { error } = await supabase
+    const { error: deleteError } = await supabase
       .from('categories')
       .delete()
       .eq('id', categoryId)
       .eq('user_id', userid)
       .eq('is_default', false);
 
-    if (error) {
-      console.log(error.message);
-      return { success: false, error: error };
+    if (deleteError) {
+      console.error('Failed to delete category:', deleteError.message);
+
+      return {
+        success: false,
+        error: deleteError.message,
+      };
     }
 
     return { success: true, error: null };
   } catch (error) {
-    console.error('Failed to update category:', error);
+    console.error('Failed to delete category:', error);
     throw error;
   }
 }

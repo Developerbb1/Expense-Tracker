@@ -5,6 +5,7 @@ import {
   IncomeSummary,
   SavingsSummary,
   TransactionFormData,
+  TransactionWithDetails,
 } from '@/app/data/types';
 import { getAuthenticatedUser } from '../actions';
 import { createClient } from '../server';
@@ -103,7 +104,7 @@ export async function addTransaction(
 
 export async function fetchTransactions(): Promise<{
   userId: string;
-  transactions: TransactionFormData[];
+  transactions: TransactionWithDetails[];
 }> {
   const user = await getAuthenticatedUser();
   const supabase = await createClient();
@@ -122,13 +123,8 @@ export async function fetchTransactions(): Promise<{
       transaction_date,
       payment_method,
       notes,
-      accounts!transactions_account_id_fkey (
-        name
-      ),
-      categories!transactions_category_id_fkey (
-        name,
-        icon
-      )
+      accounts!transactions_account_id_fkey (name),
+      categories!transactions_category_id_fkey (name, icon)
     `
     )
     .eq('user_id', user.id)
@@ -138,7 +134,7 @@ export async function fetchTransactions(): Promise<{
     throw new Error(`Failed to fetch transactions: ${error.message}`);
   }
 
-  const transactions: TransactionFormData[] = (data ?? []).map(
+  const transactions: TransactionWithDetails[] = (data ?? []).map(
     (transaction) => {
       const category = Array.isArray(transaction.categories)
         ? transaction.categories[0]
@@ -148,19 +144,29 @@ export async function fetchTransactions(): Promise<{
         ? transaction.accounts[0]
         : transaction.accounts;
 
+      const description = transaction.description ?? '';
+      const categoryName = category?.name ?? 'Uncategorized';
+      const accountName = account?.name ?? 'Unknown account';
+
       return {
         id: transaction.id,
         account_id: transaction.account_id,
         category_id: transaction.category_id,
         type: transaction.type,
         amount: Number(transaction.amount),
-        description: transaction.description ?? '',
+        description,
         transaction_date: transaction.transaction_date,
         payment_method: transaction.payment_method,
         notes: transaction.notes,
         icon: category?.icon ?? 'Tag',
-        category_name: category?.name ?? 'Uncategorized',
-        account_name: account?.name ?? 'Unknown account',
+        category_name: categoryName,
+        account_name: accountName,
+
+        // Display properties
+        title: description,
+        category: categoryName,
+        account: accountName,
+        date: transaction.transaction_date,
       };
     }
   );
@@ -613,6 +619,12 @@ export async function fetchBalanceSummary(): Promise<{
       },
       expense: {
         monthlyExpense: 0,
+        percentageChange: 0,
+        trend: 'neutral',
+      },
+      savings: {
+        monthlySavings: 0,
+        savingsRate: 0,
         percentageChange: 0,
         trend: 'neutral',
       },

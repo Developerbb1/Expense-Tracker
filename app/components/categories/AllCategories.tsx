@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pencil, Layers, Trash } from 'lucide-react';
 import {
   CategoryType,
@@ -21,11 +21,8 @@ import {
 
 type CategoryFilter = 'all' | CategoryType;
 
-const DEFAULT_COLOR = '#2563EB';
-
 export default function AllCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [userId, setUserId] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [pageError, setPageError] = useState('');
@@ -39,16 +36,16 @@ export default function AllCategories() {
   const [saving, setSaving] = useState(false);
   // Fetch categories belonging to the logged-in user.
 
-  const fetchCategories = useCallback(async () => {
-    authenticateUser();
+  async function fetchCategories() {
     setLoading(true);
     setPageError('');
+
     try {
+      await authenticateUser();
+
       const result = await getCategories();
 
-      setUserId(result.userId);
       setCategories(result.categories);
-      console.log(categories);
     } catch (error) {
       console.error('Error fetching categories:', error);
 
@@ -60,12 +57,46 @@ export default function AllCategories() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }
 
   useEffect(() => {
-    void fetchCategories();
-  }, [fetchCategories]);
+    let isMounted = true;
 
+    async function loadCategories() {
+      setLoading(true);
+      setPageError('');
+
+      try {
+        await authenticateUser();
+
+        const result = await getCategories();
+
+        if (isMounted) {
+          setCategories(result.categories);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+
+        if (isMounted) {
+          toast.error('Failed to get all categories. Please try again.', {
+            className: 'error-toast',
+          });
+
+          setPageError('Unable to load categories. Please try again.');
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadCategories();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   const filteredCategories = useMemo(() => {
     return categories.filter((category) => {
       const matchesSearch = category.name
@@ -267,8 +298,8 @@ export default function AllCategories() {
                             <button
                               type="button"
                               onClick={() => openDeleteModal(category)}
-                              title={`Edit ${category.name}`}
-                              aria-label={`Edit ${category.name}`}
+                              title={`Delete ${category.name}`}
+                              aria-label={`Delete ${category.name}`}
                             >
                               <Trash size={16} />
                             </button>

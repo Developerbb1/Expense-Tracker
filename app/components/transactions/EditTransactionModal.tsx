@@ -29,45 +29,58 @@ function getLocalDate() {
   return `${year}-${month}-${day}`;
 }
 
-export default function EditTransactionModal({
+export default function EditTransactionModal(props: EditTransactionModalProps) {
+  const { isOpen, transaction } = props;
+
+  return (
+    <EditTransactionModalContent
+      key={`${isOpen}-${transaction?.id ?? 'new'}`}
+      {...props}
+    />
+  );
+}
+
+function EditTransactionModalContent({
   isOpen,
   transaction,
   onSubmit,
   onClose,
 }: EditTransactionModalProps) {
-  const [id, setId] = useState('');
-  const [type, settype] = useState<TransactionType>('expense');
-  const [amount, setAmount] = useState('');
-  const [description, setDescription] = useState('');
-  const [transactionDate, setTransactionDate] = useState(getLocalDate);
-  const [categoryId, setCategoryId] = useState('');
-  const [accountId, setAccountId] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('card');
-  const [notes, setNotes] = useState('');
+  const id = transaction?.id ?? '';
+
+  const [type, settype] = useState<TransactionType>(
+    () => transaction?.type ?? 'expense'
+  );
+  const [amount, setAmount] = useState(
+    () => transaction?.amount.toString() ?? ''
+  );
+  const [description, setDescription] = useState(
+    () => transaction?.description ?? ''
+  );
+  const [transactionDate, setTransactionDate] = useState(
+    () => transaction?.transaction_date?.slice(0, 10) || getLocalDate()
+  );
+  const [categoryId, setCategoryId] = useState(
+    () => transaction?.category_id ?? ''
+  );
+  const [accountId, setAccountId] = useState(
+    () => transaction?.account_id ?? ''
+  );
+  const [paymentMethod, setPaymentMethod] = useState(
+    () => transaction?.payment_method || 'Cash'
+  );
+  const [notes, setNotes] = useState(() => transaction?.notes ?? '');
+
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+
   const { userAccounts, categories, fetchData } = useTransactionData(false);
 
   useEffect(() => {
-    if (!isOpen || !transaction) return;
-
-    setId(transaction.id || '');
-    settype(transaction.type);
-    setDescription(transaction.description || '');
-    setAmount(transaction.amount.toString());
-    setNotes(transaction.notes || '');
-    setError('');
-    // Date
-    setTransactionDate(
-      transaction.transaction_date?.slice(0, 10) || getLocalDate()
-    );
-    // Select values
-    setCategoryId(transaction.category_id || '');
-    setAccountId(transaction.account_id || '');
-    // Payment method must match an option exactly
-    setPaymentMethod(transaction.payment_method || 'Cash');
-  }, [isOpen, transaction]);
-
+    if (isOpen) {
+      void fetchData();
+    }
+  }, [isOpen, fetchData]);
   useEffect(() => {
     if (isOpen) {
       void fetchData();

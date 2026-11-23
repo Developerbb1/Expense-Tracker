@@ -4,7 +4,6 @@ import TransactionSummaryCards from '@/app/components/transactions/TransactionSu
 import IncomeExpenseChart from '@/app/components/dashboard/IncomeExpenseChart';
 import SpendingCategoryChart from '@/app/components/dashboard/SpendingCategoryChart';
 import RecentTransactions from '@/app/components/dashboard/RecentTransactions';
-import MonthlyBudget from '@/app/components/dashboard/MonthlyBudget';
 import '@/styles/dashboard-charts.css';
 import { authenticateUser } from '@/lib/supabase/actions';
 import { getCategorySpending } from '@/lib/supabase/transaction/actions';

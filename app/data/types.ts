@@ -3,11 +3,6 @@ import {
   ArrowLeftRight,
   Wallet,
   ChartPie,
-  ChartNoAxesCombined,
-  CalendarDays,
-  Settings,
-  UserRound,
-  LogOut,
   BadgeDollarSign,
   House,
   Utensils,
@@ -123,7 +118,7 @@ export interface CardProps {
   title: string;
   value: string;
   change: number | null;
-  trend?: string | 'up' | 'down' | 'neutral';
+  trend?: 'up' | 'down' | 'neutral';
   Icon: LucideIcon;
   iconClass: string;
   cardPage?: string;
@@ -211,9 +206,8 @@ export interface Category {
   created_at: string;
   updated_at: string;
 }
-
 export interface CategoryFormData {
-  id: string;
+  id?: string;
   name: string;
   type: CategoryType;
   icon: string;
@@ -236,7 +230,7 @@ export interface Account {
   user_id: string;
   name: string;
   account_type: string;
-  balance: number | 5000;
+  balance: number;
   currency: string | null;
   is_active: boolean;
   created_at: string;
@@ -285,6 +279,12 @@ export interface TransactionFormData {
   icon?: string;
   category_name?: string;
   account_name?: string;
+}
+export interface TransactionWithDetails extends TransactionFormData {
+  category: string;
+  account: string;
+  date: string;
+  title: string;
 }
 
 export type BalanceSummary = {

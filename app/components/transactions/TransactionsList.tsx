@@ -11,9 +11,8 @@ interface TransactionsListProps {
 export default function TransactionsList({
   recentTransactions,
 }: TransactionsListProps) {
-  const last4Transaction = recentTransactions ? true : false;
   const { loading, fetchData, transactions } = useTransactionData(
-    recentTransactions ? true : false
+    recentTransactions ?? false
   );
 
   useEffect(() => {

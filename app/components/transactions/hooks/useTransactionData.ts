@@ -3,15 +3,19 @@
 import { useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
+import { Account, Category, TransactionWithDetails } from '@/app/data/types';
+
 import { authenticateUser } from '@/lib/supabase/actions';
 import { getAccounts } from '@/lib/supabase/accounts/actions';
 import { getCategories } from '@/lib/supabase/categories/actions';
 import { fetchTransactions } from '@/lib/supabase/transaction/actions';
 
 export function useTransactionData(recentTransaction: boolean = false) {
-  const [userAccounts, setUserAccounts] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
-  const [transactions, setTransactions] = useState<any[]>([]);
+  const [userAccounts, setUserAccounts] = useState<Account[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [transactions, setTransactions] = useState<TransactionWithDetails[]>(
+    []
+  );
   const [loading, setLoading] = useState(false);
 
   const fetchData = useCallback(async () => {

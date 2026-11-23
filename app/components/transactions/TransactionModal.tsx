@@ -57,8 +57,18 @@ const initialFormData = (): TransactionFormData => ({
   payment_method: 'card',
   notes: '',
 });
+export default function TransactionModal(props: TransactionModalProps) {
+  const { isOpen, mode, transaction } = props;
 
-export default function TransactionModal({
+  return (
+    <TransactionModalContent
+      key={`${isOpen}-${mode}-${transaction?.id ?? 'new'}`}
+      {...props}
+    />
+  );
+}
+
+function TransactionModalContent({
   isOpen,
   mode,
   transaction,
@@ -66,9 +76,27 @@ export default function TransactionModal({
   onDelete,
   onClose,
 }: TransactionModalProps) {
-  const [formData, setFormData] =
-    useState<TransactionFormData>(initialFormData());
-  const [amount, setAmount] = useState('');
+  const [formData, setFormData] = useState<TransactionFormData>(() => {
+    if (mode === 'edit' && transaction) {
+      return {
+        account_id: transaction.account_id,
+        category_id: transaction.category_id,
+        type: transaction.type,
+        amount: transaction.amount,
+        description: transaction.description,
+        transaction_date: transaction.transaction_date,
+        payment_method: transaction.payment_method,
+        notes: transaction.notes ?? '',
+      };
+    }
+
+    return initialFormData();
+  });
+
+  const [amount, setAmount] = useState(() =>
+    mode === 'edit' && transaction ? String(transaction.amount) : ''
+  );
+
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -78,31 +106,6 @@ export default function TransactionModal({
       void fetchData();
     }
   }, [isOpen, mode, fetchData]);
-
-  // Populate form when editing or reset when adding
-  useEffect(() => {
-    if (!isOpen) return;
-
-    setError('');
-
-    if (mode === 'edit' && transaction) {
-      setFormData({
-        account_id: transaction.account_id,
-        category_id: transaction.category_id,
-        type: transaction.type,
-        amount: transaction.amount,
-        description: transaction.description,
-        transaction_date: transaction.transaction_date,
-        payment_method: transaction.payment_method,
-        notes: transaction.notes ?? '',
-      });
-
-      setAmount(String(transaction.amount));
-    } else if (mode === 'add') {
-      setFormData(initialFormData());
-      setAmount('');
-    }
-  }, [isOpen, mode, transaction]);
 
   function updateField<K extends keyof TransactionFormData>(
     field: K,
@@ -385,7 +388,7 @@ export default function TransactionModal({
 
                 <select
                   id="transaction-category"
-                  value={formData.category_id}
+                  value={formData.category_id ?? ''}
                   onChange={(event) =>
                     updateField('category_id', event.target.value)
                   }
@@ -393,7 +396,7 @@ export default function TransactionModal({
                 >
                   <option value="">Select category</option>
 
-                  {categories.map((category) => (
+                  {filteredCategories.map((category) => (
                     <option key={category.id} value={category.id}>
                       {category.name}
                     </option>

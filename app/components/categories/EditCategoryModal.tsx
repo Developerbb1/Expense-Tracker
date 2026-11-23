@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Tag, ArrowDownCircle, ArrowUpCircle } from 'lucide-react';
 
 import ModalLayout from '@/app/components/modals/ModalLayout';
@@ -19,33 +19,37 @@ interface EditCategoryModalProps {
   onClose: () => void;
 }
 
-export default function EditCategoryModal({
+export default function EditCategoryModal(props: EditCategoryModalProps) {
+  const { isOpen, category } = props;
+
+  return (
+    <EditCategoryModalContent
+      key={`${isOpen}-${category?.id ?? 'none'}`}
+      {...props}
+    />
+  );
+}
+
+function EditCategoryModalContent({
   isOpen,
   category,
   onSubmit,
   onClose,
 }: EditCategoryModalProps) {
-  const [id, setId] = useState('');
-  const [name, setName] = useState('');
-  const [type, setType] = useState<CategoryType>('expense');
-  const [icon, setIcon] = useState('Tag');
-  const [color, setColor] = useState(categoryColors[0]);
-  const [isDefault, setIsDefault] = useState(false);
+  const [id] = useState(() => category?.id ?? '');
+  const [name, setName] = useState(() => category?.name ?? '');
+  const [type, setType] = useState<CategoryType>(
+    () => category?.type ?? 'expense'
+  );
+  const [icon, setIcon] = useState(() => category?.icon || 'Tag');
+  const [color, setColor] = useState(
+    () => category?.color || categoryColors[0]
+  );
+  const [isDefault, setIsDefault] = useState(
+    () => category?.is_default ?? false
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
-
-  // Populate the form whenever the selected category changes.
-  useEffect(() => {
-    if (!category) return;
-
-    setId(category.id);
-    setName(category.name);
-    setType(category.type);
-    setIcon(category.icon || 'Tag');
-    setColor(category.color || categoryColors[0]);
-    setIsDefault(category.is_default ?? false);
-    setError('');
-  }, [category]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
