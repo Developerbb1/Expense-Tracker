@@ -1,0 +1,89 @@
+@reference "tailwindcss";
+
+.budget-panel {
+  @apply w-full;
+}
+
+.budget-list {
+  @apply mt-5 flex w-full flex-col gap-[18px];
+}
+
+.budget-item {
+  @apply flex w-full items-center gap-3;
+}
+
+.budget-icon {
+  @apply flex h-10 w-10 min-w-10 items-center justify-center rounded-xl bg-violet-100 text-violet-600;
+}
+
+.budget-details {
+  @apply min-w-0 flex-1;
+}
+
+.budget-info {
+  @apply mb-[10px] grid grid-cols-[1fr_auto_auto] items-center gap-3;
+}
+
+.budget-category {
+  @apply text-sm font-medium text-blue-800;
+}
+
+.budget-amount {
+  @apply whitespace-nowrap text-[11px] text-slate-600;
+}
+
+.budget-percentage {
+  @apply min-w-[30px] text-right text-[11px] font-semibold text-blue-700;
+}
+
+.budget-progress-track {
+  @apply h-[9px] w-full overflow-hidden rounded-full bg-slate-100;
+}
+
+.budget-progress-fill {
+  @apply h-full rounded-full transition-[width] duration-300;
+}
+
+/* Budget colors */
+.budget-bar-blue {
+  @apply bg-blue-500;
+}
+
+.budget-bar-green {
+  @apply bg-emerald-500;
+}
+
+.budget-bar-purple {
+  @apply bg-purple-500;
+}
+
+.budget-bar-yellow {
+  @apply bg-yellow-500;
+}
+
+.budget-bar-orange {
+  @apply bg-orange-500;
+}
+
+.budget-bar-gray {
+  @apply bg-gray-400;
+}
+
+/* Responsive styles */
+@media (max-width: 480px) {
+  .budget-info {
+    @apply grid-cols-[1fr_auto] gap-[5px];
+  }
+
+  .budget-category {
+    @apply col-start-1;
+  }
+
+  .budget-amount {
+    @apply col-start-1 row-start-2;
+  }
+
+  .budget-percentage {
+    @apply col-start-2 row-span-2 row-start-1;
+  }
+}

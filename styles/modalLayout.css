@@ -1,0 +1,550 @@
+@reference "tailwindcss";
+
+/* Modal overlay */
+.app-modal-overlay {
+  @apply fixed inset-0 z-[2000]
+    flex items-center justify-center
+    overflow-y-auto p-6
+    backdrop-blur-[4px];
+  background: rgb(30 58 95 / 40%);
+}
+
+/* Modal container */
+.app-modal {
+  @apply w-full max-w-[var(--modal-max-width,635px)]
+    overflow-y-auto rounded-[14px]
+    border border-[#e1eaff]
+    bg-white text-[#1e40af]
+    shadow-[0_20px_65px_rgb(20_49_91/20%)]
+    animate-[app-modal-enter_180ms_ease-out];
+
+  max-height: calc(100dvh - 48px);
+}
+
+/* Modal animation */
+@keyframes app-modal-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Modal header */
+.app-modal-header {
+  @apply flex items-center justify-between gap-4
+    border-b border-[#edf1f7]
+    px-6 py-[22px];
+}
+
+/* Modal heading */
+.app-modal-heading {
+  @apply flex min-w-0 items-center gap-3.5;
+}
+
+/* Modal icon */
+.app-modal-icon {
+  @apply flex size-11 shrink-0
+    items-center justify-center
+    rounded-xl bg-[#eaf2ff] text-[#2563eb];
+}
+
+/* Modal title */
+.app-modal-heading h2 {
+  @apply m-0 text-[21px] font-bold text-[#1e40af];
+}
+
+/* Modal description */
+.app-modal-heading p {
+  @apply mt-[5px] mb-0
+    text-[13px] leading-[1.5] text-[#7186a5];
+}
+
+/* Close button */
+.app-modal-close {
+  @apply flex size-9 shrink-0
+    items-center justify-center
+    rounded-lg border-0 bg-transparent
+    text-[#6b83a5] cursor-pointer
+    transition-colors
+    hover:bg-[#f1f5fb] hover:text-[#17345e]
+    disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+/* Modal footer */
+.app-modal-footer {
+  @apply flex items-center justify-end gap-3
+    border-t border-[#e7edf6]
+    bg-white px-6 py-[18px];
+}
+
+/* Footer buttons */
+.app-modal-footer button {
+  @apply inline-flex min-h-[43px]
+    items-center justify-center gap-2
+    rounded-lg px-[18px] py-2.5
+    text-[13px] font-semibold
+    cursor-pointer
+    transition-[background-color,box-shadow] duration-150
+    disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+/* Submit button */
+.app-modal-footer .app-modal-submit {
+  @apply border border-[#2563eb]
+    bg-[#2563eb] text-white
+    shadow-[0_3px_8px_rgb(37_99_235/16%)]
+    hover:bg-[#1d4ed8]
+    hover:shadow-[0_4px_12px_rgb(37_99_235/20%)];
+}
+
+/* Delete button */
+.app-modal-delete {
+  @apply inline-flex items-center justify-center gap-2
+    rounded-lg bg-red-600 px-5 py-2.5
+    text-sm font-semibold text-white
+    transition-colors hover:bg-red-700
+    disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+/* Mobile layout */
+@media (max-width: 600px) {
+  .app-modal-overlay {
+    @apply items-start p-3;
+  }
+
+  .app-modal {
+    max-height: calc(100dvh - 24px);
+    @apply my-auto rounded-xl;
+  }
+
+  .app-modal-header {
+    @apply px-4 py-[18px];
+  }
+
+  .app-modal-heading {
+    @apply gap-[11px];
+  }
+
+  .app-modal-heading h2 {
+    @apply text-lg;
+  }
+
+  .app-modal-heading p {
+    @apply text-xs;
+  }
+
+  .app-modal-footer {
+    @apply px-4 py-[15px];
+  }
+
+  .app-modal-footer button {
+    @apply px-[13px];
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .app-modal {
+    animation: none;
+  }
+}
+
+/**********************************************************************/
+
+/* Category modal body */
+.modal-body {
+  @apply flex flex-col gap-[23px]
+    px-7 pt-[22px] pb-[25px]
+    text-[#1e40af];
+}
+
+/* Form fields */
+.form-field {
+  @apply flex min-w-0 flex-col gap-2.5
+    text-[#1e40af];
+}
+
+.form-field > label {
+  @apply text-sm font-semibold text-[#1e40af];
+}
+
+.form-field > label span {
+  @apply text-red-500;
+}
+
+.form-field > label small {
+  @apply text-xs font-normal text-slate-500;
+}
+
+/* Input and select */
+.form-field input,
+.form-field select {
+  @apply min-h-[45px] w-full
+    rounded-[9px] border border-[#d7e1ef]
+    bg-white px-3.5 py-[11px]
+    text-sm text-[#17345e]
+    outline-none
+    transition-[border-color,box-shadow] duration-150
+    focus:border-blue-500
+    focus:shadow-[0_0_0_3px_rgb(59_130_246/12%)];
+  font: inherit;
+  font-size: 14px;
+}
+
+.form-field input::placeholder {
+  @apply text-slate-400;
+}
+
+/* Category type selector */
+.type-selector {
+  @apply grid grid-cols-2 gap-3;
+}
+
+/* Category type option */
+.type-option {
+  @apply flex min-h-[86px] min-w-0
+    items-center gap-3
+    rounded-[11px] border border-[#dbe4f0]
+    bg-white p-[15px]
+    text-left text-slate-500
+    cursor-pointer
+    transition-[border-color,background-color] duration-150;
+}
+
+.type-option > svg {
+  @apply shrink-0;
+}
+
+/* Category type text */
+.type-text {
+  @apply flex min-w-0 flex-1
+    flex-col gap-1.5;
+}
+
+.type-option strong {
+  @apply text-sm text-[#17345e];
+}
+
+.type-option small {
+  @apply text-xs text-slate-500 whitespace-normal;
+}
+
+/* Active expense type */
+.type-option.expense-active {
+  @apply border-blue-500 bg-blue-50 text-blue-600;
+}
+
+/* Active income type */
+.type-option.income-active {
+  @apply border-emerald-500 bg-emerald-50 text-emerald-600;
+}
+
+/* Selected type check */
+.type-check {
+  @apply self-start text-lg font-bold;
+}
+
+/* Icon preview */
+.icon-preview {
+  @apply flex items-center gap-[9px]
+    text-xs text-slate-500;
+}
+
+/* Color options */
+.color-options {
+  @apply flex flex-wrap items-center
+    gap-[15px] px-[3px] py-0.5;
+}
+
+/* Individual color */
+.color-option {
+  @apply size-[31px] shrink-0
+    rounded-full border-2 border-transparent
+    cursor-pointer
+    transition-[outline-offset,transform] duration-150
+    hover:scale-[1.08];
+}
+
+/* Selected color */
+.color-option.selected {
+  @apply outline-2 outline-blue-600
+    outline-offset-[3px];
+}
+
+/* Default category option */
+.default-option {
+  @apply flex items-start gap-3
+    cursor-pointer;
+}
+
+.default-option input {
+  @apply mt-0.5 size-[19px] shrink-0
+    cursor-pointer accent-blue-600;
+}
+
+.default-option > span {
+  @apply flex flex-col gap-[5px];
+}
+
+.default-option strong {
+  @apply text-[13px] font-medium text-[#17345e];
+}
+
+.default-option small {
+  @apply text-xs leading-[1.5] text-slate-500;
+}
+
+/* Form error */
+.form-error {
+  @apply mt-4 mb-0 rounded-lg
+    border border-red-200 bg-[#fff5f5]
+    px-3 py-[11px] text-[13px] text-red-700;
+}
+
+/* Cancel button */
+.cancel-button {
+  @apply border border-slate-300
+    bg-white text-slate-700;
+}
+
+.app-modal-footer .cancel-button:hover:not(:disabled) {
+  @apply bg-slate-50;
+}
+
+/* Mobile layout */
+@media (max-width: 600px) {
+  .modal-body {
+    @apply gap-5 px-[18px] pt-[18px] pb-[22px];
+  }
+
+  .type-selector {
+    @apply grid-cols-1 gap-[9px];
+  }
+
+  .type-option {
+    @apply min-h-[72px];
+  }
+}
+
+/**********************************************************************/
+/******************Add Transaction Modal css*****************************/
+/**********************************************************************/
+
+/* Transaction modal body */
+.modal-body {
+  @apply px-6 py-[22px];
+}
+
+/* Type option buttons */
+.type-option {
+  @apply flex min-h-11 cursor-pointer items-center justify-center
+    gap-2 rounded-[9px] border border-[#e1e9f5]
+    bg-white px-2 py-2.5 text-[13px] font-semibold
+    transition-[background-color,border-color] duration-150;
+}
+
+/* Expense option */
+.expense-option {
+  @apply text-[#e94343];
+}
+
+.expense-option.active {
+  @apply border-[#ff7777] bg-[#fff5f5];
+}
+
+/* Income option */
+.income-option {
+  @apply text-[#07966c];
+}
+
+.income-option.active {
+  @apply border-[#57d4ad] bg-[#effbf6];
+}
+
+/* Transfer option */
+.transfer-option {
+  @apply text-blue-600;
+}
+
+.transfer-option.active {
+  @apply border-[#83adff] bg-[#eff5ff];
+}
+
+/* Transaction form grid */
+.form-grid {
+  @apply grid grid-cols-2 gap-x-4 gap-y-[19px];
+}
+
+/* Form field */
+.form-field {
+  @apply flex min-w-0 flex-col gap-2;
+}
+
+.form-field.full-width {
+  @apply col-span-full;
+}
+
+/* Labels */
+.form-field label {
+  @apply text-[13px] font-semibold text-[#243f67];
+}
+
+.form-field label > span:not(.optional) {
+  @apply text-red-500;
+}
+
+.form-field label .optional {
+  @apply text-xs font-normal text-[#8998ad];
+}
+
+/* Inputs, selects, and textareas */
+.form-field input,
+.form-field select,
+.form-field textarea {
+  @apply min-h-[43px] w-full min-w-0
+    rounded-lg border border-[#cdddf5]
+    bg-white px-3 py-2.5
+    text-[13px] text-[#17345e]
+    outline-none
+    transition-[border-color,box-shadow] duration-150
+    focus:border-[#4a83ff]
+    focus:shadow-[0_0_0_3px_rgb(37_99_235/9%)];
+
+  font: inherit;
+  font-size: 13px;
+}
+
+.form-field textarea {
+  @apply min-h-[88px] resize-y;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  @apply text-[#8c9fba];
+}
+
+/* Amount input wrapper */
+.amount-input-wrapper {
+  @apply flex min-h-[43px] overflow-hidden
+    rounded-lg border border-[#cdddf5]
+    transition-[border-color,box-shadow] duration-150
+    focus-within:border-[#4a83ff]
+    focus-within:shadow-[0_0_0_3px_rgb(37_99_235/9%)];
+}
+
+/* Amount prefix */
+.amount-prefix {
+  @apply flex min-w-[43px] items-center justify-center
+    border-r border-[#cdddf5]
+    bg-[#f5f8ff] px-3
+    font-semibold text-[#31578b];
+}
+
+/* Amount input */
+.amount-input-wrapper input {
+  @apply w-full min-w-0 rounded-none border-0
+    px-3 py-2.5 text-[13px] text-[#17345e]
+    outline-none shadow-none
+    focus:border-0 focus:outline-none focus:shadow-none;
+
+  font: inherit;
+  font-size: 13px;
+}
+
+/* Transaction form error */
+.form-error {
+  @apply mt-4 mb-0 rounded-lg
+    border border-red-200 bg-[#fff5f5]
+    px-3 py-[11px] text-[13px] text-red-700;
+}
+
+/* Cancel button */
+.cancel-button {
+  @apply border border-[#cdddf5]
+    bg-white text-blue-600;
+}
+
+.app-modal-footer .cancel-button:hover:not(:disabled) {
+  @apply bg-[#f5f8ff];
+}
+
+/* Mobile layout */
+@media (max-width: 600px) {
+  .modal-body {
+    @apply px-4 py-[18px];
+  }
+
+  .form-grid {
+    @apply grid-cols-1 gap-y-4;
+  }
+
+  .form-field.full-width {
+    @apply col-span-1;
+  }
+
+  .type-selector {
+    @apply gap-[5px];
+  }
+
+  .type-option {
+    @apply gap-[5px] px-1 py-[9px] text-xs;
+  }
+}
+
+/* Account status panel */
+.status-field {
+  @apply mt-6 flex items-center justify-between gap-4 rounded-xl
+    border border-blue-100 bg-blue-50/50 p-4;
+}
+
+.status-info {
+  @apply flex items-center gap-3;
+}
+
+.status-icon {
+  @apply flex size-10 shrink-0 items-center justify-center rounded-[10px];
+}
+
+.status-icon.is-active {
+  @apply bg-blue-100 text-blue-600;
+}
+
+.status-icon.is-inactive {
+  @apply bg-slate-200 text-slate-500;
+}
+
+.status-title {
+  @apply m-0 text-sm font-semibold text-blue-900;
+}
+
+.status-description {
+  @apply mt-1 mb-0 text-xs leading-relaxed text-slate-500;
+}
+
+/* Toggle switch */
+.status-toggle {
+  @apply relative inline-flex h-[26px] w-[46px] shrink-0 items-center
+    rounded-full border-0 bg-slate-300 p-[3px]
+    transition-colors duration-200
+    focus-visible:outline-2 focus-visible:outline-offset-[3px]
+    focus-visible:outline-blue-400
+    disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.status-toggle.is-active {
+  @apply bg-blue-600;
+}
+
+.status-toggle-thumb {
+  @apply block size-5 translate-x-0 rounded-full bg-white shadow-sm
+    transition-transform duration-200;
+}
+
+.status-toggle.is-active .status-toggle-thumb {
+  @apply translate-x-5;
+}

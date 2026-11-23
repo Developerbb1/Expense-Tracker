@@ -1,0 +1,478 @@
+@reference "tailwindcss";
+
+/* =========================
+   All Transactions
+========================= */
+
+.all-transactions {
+  @apply w-full min-w-0 rounded-2xl border border-blue-100 bg-white p-5 shadow-sm;
+  color: #1e293b;
+}
+
+.list-heading {
+  @apply mb-5 flex items-center justify-between gap-4;
+}
+
+.list-heading h2 {
+  @apply text-xl font-bold tracking-tight  text-[#1e40af];
+}
+
+.list-heading p {
+  @apply mt-1 text-sm text-slate-500;
+}
+
+/* =========================
+   Search & Filters
+========================= */
+
+.transactions-toolbar {
+  @apply mb-4 flex flex-wrap items-center gap-3;
+}
+
+.list-search {
+  @apply flex min-w-48 flex-1 items-center gap-2 rounded-lg border border-blue-100 bg-slate-50 px-3 py-2.5 transition;
+}
+
+.list-search:focus-within {
+  @apply border-blue-400 bg-white ring-2 ring-blue-100;
+}
+
+.list-search svg {
+  @apply shrink-0 text-slate-400;
+}
+
+.list-search input {
+  @apply w-full min-w-0 border-0 bg-transparent text-sm text-slate-700 outline-none;
+}
+
+.list-search input::placeholder {
+  @apply text-slate-400;
+}
+
+.transactions-select {
+  @apply min-w-36 rounded-lg border border-blue-100 bg-white px-3 py-2.5 text-sm text-slate-600 outline-none transition;
+}
+
+.transactions-select:focus {
+  @apply border-blue-400 ring-2 ring-blue-100;
+}
+
+.transactions-date-filter {
+  @apply flex min-w-0 items-center gap-2 rounded-lg border border-blue-100 bg-white px-3 py-2.5 text-slate-500;
+}
+
+.transactions-date-filter svg {
+  @apply shrink-0;
+}
+
+.transactions-date-filter input {
+  @apply w-28 min-w-0 bg-transparent text-xs text-slate-600 outline-none;
+}
+
+.transactions-date-filter span {
+  @apply text-slate-400;
+}
+
+/* =========================
+   Type Tabs
+========================= */
+
+.transactions-tabs {
+  @apply flex items-center gap-5 border-b border-slate-100;
+}
+
+.transactions-tab {
+  @apply flex items-center gap-2 border-b-2 border-transparent px-1 py-3 text-sm font-medium text-slate-500 transition;
+}
+
+.transactions-tab:hover {
+  @apply text-blue-600;
+}
+
+.transactions-tab.active {
+  @apply border-blue-600 text-blue-700;
+}
+
+.transactions-count {
+  @apply rounded-full bg-blue-50 px-2 py-0.5 text-xs text-blue-700;
+}
+
+.transactions-filter-label {
+  @apply ml-auto flex items-center gap-1.5 pb-3 text-sm text-slate-500;
+}
+
+/* =========================
+   Desktop Table
+========================= */
+
+.table-wrapper {
+  @apply w-full overflow-x-auto;
+}
+
+.list-table {
+  @apply w-full border-collapse text-left;
+  min-width: 450px;
+}
+
+.list-table thead {
+  @apply border-b border-slate-100 bg-slate-50/70;
+}
+
+.list-table th {
+  @apply px-3 py-4 text-xs font-semibold uppercase tracking-wide text-slate-500;
+}
+
+.list-table td {
+  @apply border-b border-slate-50 px-3 py-4 text-xs text-slate-500;
+}
+
+.list-table td h1 {
+  @apply font-semibold text-base text-blue-800;
+}
+.list-table tbody tr {
+  @apply transition-colors;
+}
+
+.list-table tbody tr:hover {
+  @apply bg-slate-300;
+}
+
+.list-table tbody tr:last-child td {
+  @apply border-b-0;
+}
+
+.table-tr-box {
+  @apply flex items-center justify-between gap-3 border-2 border-slate-100  mb-4;
+}
+.table-td-div {
+  @apply flex min-w-44 items-center gap-3;
+}
+
+.transaction-icon {
+  @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-xl;
+}
+
+.income-icon {
+  @apply !bg-emerald-100 !text-emerald-600;
+}
+
+.expense-icon {
+  @apply bg-violet-100 text-violet-500;
+}
+
+.transaction-date {
+  @apply whitespace-nowrap text-slate-500;
+}
+
+.transaction-category {
+  @apply inline-block rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700;
+}
+
+.transaction-account {
+  @apply whitespace-nowrap text-slate-500;
+}
+
+.transaction-type {
+  @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium;
+}
+
+.type-income {
+  @apply bg-emerald-50 text-emerald-700;
+}
+
+.type-expense {
+  @apply bg-violet-50 text-violet-600;
+}
+
+.amount-column {
+  @apply text-right;
+}
+
+.transaction-amount {
+  @apply whitespace-nowrap text-right font-semibold;
+}
+
+.amount-income {
+  @apply text-emerald-600;
+}
+
+.amount-expense {
+  @apply text-violet-500;
+}
+
+.transaction-action {
+  @apply rounded-lg p-1.5 text-slate-400 transition hover:bg-blue-50 hover:text-blue-600;
+}
+
+/* =========================
+   Empty State
+========================= */
+
+.list-empty {
+  @apply flex flex-col items-center justify-center gap-2 py-12 text-center;
+}
+
+.list-empty > svg {
+  @apply mb-1 text-slate-300;
+}
+
+.list-empty h3 {
+  @apply font-semibold text-slate-700;
+}
+
+.list-empty p {
+  @apply text-sm text-slate-500;
+}
+
+/* =========================
+   Mobile List
+========================= */
+
+.mobile-list {
+  @apply hidden;
+}
+
+.transaction-mobile-item {
+  @apply flex items-center  gap-3 border-2 border-slate-100 py-4 mb-4;
+}
+
+.transaction-mobile-details {
+  @apply flex min-w-0 flex-1 flex-col gap-1;
+}
+
+.transaction-mobile-details h1 {
+  @apply font-semibold text-base text-blue-800;
+}
+
+.transaction-mobile-details .transaction-title {
+  @apply truncate text-sm;
+}
+
+.transaction-mobile-meta {
+  @apply truncate text-xs text-slate-500;
+}
+
+.transaction-mobile-details .transaction-date {
+  @apply text-xs;
+}
+
+.transaction-mobile-amount {
+  @apply flex shrink-0 flex-col items-end gap-1;
+}
+
+.transaction-mobile-amount strong {
+  @apply whitespace-nowrap text-sm;
+}
+
+.transaction-mobile-amount .transaction-type {
+  @apply text-[10px];
+}
+.balance-amt-display {
+  @apply ml-auto flex shrink-0 flex-col items-end gap-1 text-right;
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+  .list-table {
+    @apply w-full min-w-0;
+  }
+}
+
+.sidebar-container {
+  position: fixed;
+  z-index: 1000;
+}
+
+/* =========================
+   Pagination
+========================= */
+
+.transactions-pagination {
+  @apply mt-4 flex items-center justify-between gap-4 border-t border-slate-100 pt-4;
+}
+
+.transactions-pagination > p {
+  @apply text-xs text-slate-500;
+}
+
+.pagination-controls {
+  @apply flex items-center gap-1;
+}
+
+.pagination-page-wrapper {
+  @apply flex items-center gap-1;
+}
+
+.pagination-arrow,
+.pagination-page {
+  @apply flex h-8 min-w-8 items-center justify-center rounded-lg text-sm text-slate-600 transition;
+}
+
+.pagination-arrow:hover:not(:disabled),
+.pagination-page:hover:not(.active) {
+  @apply bg-blue-50 text-blue-700;
+}
+
+.pagination-arrow:disabled {
+  @apply cursor-not-allowed opacity-40;
+}
+
+.pagination-page.active {
+  @apply bg-blue-600 font-semibold text-white shadow-sm;
+}
+
+.pagination-ellipsis {
+  @apply px-1 text-slate-400;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 1100px) {
+  .transactions-toolbar {
+    @apply items-stretch;
+  }
+
+  .list-search {
+    @apply basis-full;
+  }
+
+  .transactions-select {
+    @apply flex-1;
+  }
+
+  .transactions-date-filter {
+    @apply flex-1;
+  }
+}
+
+@media (max-width: 760px) {
+  .all-transactions {
+    @apply rounded-xl p-3;
+  }
+
+  .list-heading h2 {
+    @apply text-lg;
+  }
+
+  .list-heading p {
+    @apply text-xs;
+  }
+
+  .transactions-tabs {
+    @apply gap-4;
+  }
+
+  .transactions-filter-label {
+    @apply hidden;
+  }
+  /*
+  .table-wrapper {
+    @apply hidden;
+  }
+*/
+  .mobile-list {
+    @apply block;
+  }
+
+  .transactions-pagination {
+    @apply flex-col items-start;
+  }
+
+  .transactions-pagination > p {
+    @apply leading-5;
+  }
+
+  .pagination-controls {
+    @apply w-full justify-end;
+  }
+}
+
+@media (max-width: 420px) {
+  .transactions-toolbar {
+    @apply flex-col;
+  }
+
+  .list-search,
+  .transactions-select,
+  .transactions-date-filter {
+    @apply w-full;
+  }
+
+  .transactions-date-filter input {
+    @apply flex-1;
+  }
+
+  .transaction-mobile-item {
+    @apply gap-2;
+  }
+
+  .transaction-icon {
+    @apply h-9 w-9;
+  }
+
+  .transaction-mobile-amount strong {
+    @apply text-xs;
+  }
+}
+
+/* Statistics */
+.stats {
+  @apply grid grid-cols-3 gap-5;
+}
+
+.stat-card {
+  @apply flex items-center gap-[15px] rounded-[13px] border border-[#e4eaf4]
+    bg-gray-100 p-5
+    shadow-sm
+    transition-all duration-200;
+}
+
+.stat-card:hover {
+  @apply -translate-y-0.5 shadow-md;
+}
+
+.stat-icon {
+  @apply flex size-[47px] shrink-0 items-center justify-center rounded-[11px];
+}
+
+.stat-icon.blue {
+  @apply bg-blue-50 text-blue-600;
+}
+
+.stat-icon.red {
+  @apply bg-red-50 text-red-600;
+}
+
+.stat-icon.green {
+  @apply bg-green-50 text-green-600;
+}
+
+.stat-card p {
+  @apply mb-[3px] mt-0 text-[14px]  text-slate-500;
+}
+
+.stat-card h2 {
+  @apply m-0 text-[25px] font-bold text-[#1e40af];
+}
+.transaction-mobile-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.transaction-mobile-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.transaction-mobile-amount {
+  flex-shrink: 0;
+}
+
+.transaction-type-badge {
+  @apply inline-flex rounded-full
+    px-2.5 py-1 font-medium;
+}
