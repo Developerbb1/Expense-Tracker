@@ -1,0 +1,19 @@
+name: Supabase Health Check
+
+on:
+  schedule:
+    - cron: '0 */8 * * *'
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Supabase database
+        run: |
+          curl --fail --show-error \
+            --retry 2 \
+            --retry-delay 10 \
+            -H "Authorization: Bearer ${{ secrets.HEALTH_CHECK_SECRET }}" \
+            "${{ secrets.HEALTH_CHECK_URL }}"
